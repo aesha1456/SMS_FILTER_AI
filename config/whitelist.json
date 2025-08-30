@@ -1,0 +1,50 @@
+{
+  "domains": [
+    "trip.com",
+    "amazon.in",
+    "flipkart.com",
+    "myntra.com",
+    "icicibank.com",
+    "airtel.in",
+    "bluedart.com",
+    "secure.bankportal.in",
+    "officialstore.com",
+    "paytm.com",
+    "zomato.com",
+    "ola.in",
+    "flipkartpayments.com",
+    "swiggy.com",
+    "amazonpay.in"
+  ],
+  
+  "phrases": [
+    "your otp is",
+    "payment successful",
+    "thank you for shopping",
+    "transaction id",
+    "logged into account",
+    "tracking id",
+    "invoice for order",
+    "booking confirmed",
+    "shipped",
+    "wallet credited",
+    "order delivered",
+    "promo code applied",
+    "subscription activated",
+    "payment received",
+    "delivery scheduled"
+  ],
+  
+  "senders": [
+    "VM-ICICIBK",
+    "VK-AMAZON",
+    "VM-AXISBK",
+    "VK-FLIPKART",
+    "VM-PAYTM",
+    "VK-SBIOTP",
+    "VM-HDFC",
+    "VK-PHONEPE",
+    "VM-YESBANK",
+    "VK-ICICILOAN"
+]
+}

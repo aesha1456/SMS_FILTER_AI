@@ -1,0 +1,28 @@
+2025-08-31 00:31:31,904 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:33:14,871 | INFO | BLOCKED | 'Claim your prize at https://fakewebsite.com...' | suspicious_domain
+2025-08-31 00:33:29,667 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:39:38,147 | INFO | ALLOWED | 'Congratulations! You have won a free prize....' | ai_low_confidence
+2025-08-31 00:39:54,712 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:40:05,807 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:40:22,453 | WARNING | Rejected empty message
+2025-08-31 00:41:22,760 | INFO | ALLOWED | 'Big sale! Get 50% off today!...' | ai
+2025-08-31 00:42:15,348 | INFO | ALLOWED | 'Congratulations! You have won a free prize....' | ai_low_confidence
+2025-08-31 00:42:33,293 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:43:10,651 | INFO | ALLOWED | 'Big sale! Get 50% off today!...' | ai
+2025-08-31 00:43:21,609 | INFO | ALLOWED | 'Your OTP is 654321...' | whitelisted
+2025-08-31 00:50:58,886 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 00:51:14,090 | INFO | ALLOWED | 'Your order #98765 has been shipped and will arrive tomorrow....' | whitelisted
+2025-08-31 00:56:09,774 | INFO | ALLOWED | 'Big sale! Get 50% off today on all items!...' | ai
+2025-08-31 00:56:29,778 | INFO | BLOCKED | 'Congratulations! You won $1000. Click http://fakewebsite.com to claim....' | suspicious_domain
+2025-08-31 00:56:58,947 | INFO | BLOCKED | 'Claim your prize at http://winfreecash.com now!...' | ai
+2025-08-31 00:58:39,524 | INFO | ALLOWED | 'Your order #12345 has been confirmed. Track at www.example.com/order/12345...' | ai
+2025-08-31 00:58:54,088 | INFO | ALLOWED | 'Exclusive offer! Get 50% OFF on all electronics today only! Visit www.shopnow.com...' | ai
+2025-08-31 01:00:01,033 | INFO | ALLOWED | 'Your OTP is 987654. Do not share it with anyone....' | whitelisted
+2025-08-31 01:00:15,771 | INFO | ALLOWED | 'Your account ending 1234 has been credited with $500....' | ai
+2025-08-31 01:00:26,765 | INFO | ALLOWED | 'Flash Sale! 70% off on all shoes today only at www.shoestore.com...' | ai
+2025-08-31 01:00:38,967 | INFO | BLOCKED | 'Congratulations! You won $1000. Click http://fakebanklogin.com to claim....' | ai
+2025-08-31 01:01:34,089 | INFO | ALLOWED | 'Your OTP is 123456...' | whitelisted
+2025-08-31 01:01:41,519 | INFO | ALLOWED | 'Your order #12345 has been confirmed. Track at www.example.com/order/12345...' | ai
+2025-08-31 01:01:55,975 | INFO | ALLOWED | 'Exclusive offer! Get 50% OFF on all electronics today only! Visit www.shopnow.com...' | ai
+2025-08-31 01:02:05,951 | INFO | BLOCKED | 'Congratulations! You won $1000. Click http://fakebanklogin.com to claim....' | ai
+2025-08-31 01:02:15,725 | INFO | BLOCKED | 'Claim your free lottery prize at http://winfreecash.com now!...' | ai
