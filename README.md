@@ -102,7 +102,7 @@ SMS-FILTER-AI/
 │   └── preprocessed_data
 |       └── labeled_sms_dataset_FINAL.csv
 |       └── preprocessing.ipynb
-|    └── preprocessed_data
+|    └── raw
 |        └── message_dataset_50k.csv
 ├── logs/
 │   └── application.log
