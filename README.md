@@ -4,6 +4,33 @@ A robust and production-ready SMS classification system built with **FastAPI** a
 
 ---
 
+## 🏗️ System Architecture / Pipeline Flow
+
+```mermaid
+flowchart TD
+
+A[Incoming SMS Message] --> B[API Endpoint: /check_sms]
+B --> C[Whitelist / Blacklist Check]
+C -->|Whitelisted| D[Directly Allowed ✅]
+C -->|Blacklisted| E[Blocked ❌]
+C -->|Not Listed| F[AI Classifier]
+
+F --> G{Category Prediction}
+G -->|Transactional| H[Allowed with High Priority ⚡]
+G -->|Promotional| I[Allowed/Flagged with Confidence Score 📊]
+G -->|Spam| J[Blocked 🚫]
+G -->|Suspicious| K[Quarantined / Manual Review 🕵️]
+
+H --> L[Final Verdict]
+I --> L
+J --> L
+K --> L
+
+L --> M[Response JSON: {verdict, category, confidence, reason}]
+```
+
+---
+
 ## 📊 Dataset
 
 * **Size**: 12,030 labeled SMS messages
@@ -12,6 +39,8 @@ A robust and production-ready SMS classification system built with **FastAPI** a
 * **Result**: Perfect confusion matrix during evaluation (no misclassifications)
 
 ---
+
+
 
 ## 🧪 Model Performance
 
@@ -264,4 +293,12 @@ locust -f locustfile.py --host=http://localhost:8000 -u 100 -r 10
 ## 🏁 Summary
 
 This SMS filter system combines **AI classification**, **domain analysis**, and **configurable whitelisting** to deliver **lightning-fast**, **accurate**, and **secure** SMS filtering. Tested on a balanced dataset with perfect accuracy and stress-tested under load, it is ready for deployment in real telecom-grade environments.
+
+
+
+
+---
+
+Would you like me to also **design a professional project logo/banner (with text + icon)** for the README so it looks visually unique and polished?
+
 
