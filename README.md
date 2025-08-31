@@ -8,16 +8,26 @@ A robust and production-ready SMS classification system built with **FastAPI** a
 
 ```mermaid
 flowchart TD
-    A[Incoming SMS via API Request] --> B[FastAPI Endpoint: /check_sms]
-    B --> C[Preprocessing Module: Clean & Normalize Text]
-    C --> D[Feature Extraction: Vectorization / Embeddings]
-    D --> E[AI/ML Model: Spam Classifier]
-    E --> F{Prediction Result}
-    F -->|Spam| G[Verdict: SMS is Spam 🚨]
-    F -->|Not Spam| H[Verdict: SMS is Legitimate ✅]
-    G --> I[Confidence Score Returned]
-    H --> I[Confidence Score Returned]
-    I --> J[Final JSON Response to User]
+
+A[Incoming SMS Message] --> B[API Endpoint: /check_sms]
+B --> C[Whitelist / Blacklist Check]
+C -->|Whitelisted| D[Directly Allowed ✅]
+C -->|Blacklisted| E[Blocked ❌]
+C -->|Not Listed| F[AI Classifier]
+
+F --> G{Category Prediction}
+G -->|Transactional| H[Allowed with High Priority ⚡]
+G -->|Promotional| I[Allowed/Flagged with Confidence Score 📊]
+G -->|Spam| J[Blocked 🚫]
+G -->|Suspicious| K[Quarantined / Manual Review 🕵️]
+
+H --> L[Final Verdict]
+I --> L
+J --> L
+K --> L
+
+L --> M[Response JSON: {verdict, category, confidence, reason}]
+
 
 ```
 
