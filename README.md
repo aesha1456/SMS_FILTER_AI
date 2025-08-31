@@ -11,6 +11,7 @@ flowchart TD
 
 A[Incoming SMS Message] --> B[API Endpoint: /check_sms]
 B --> C[Whitelist / Blacklist Check]
+
 C -->|Whitelisted| D[Directly Allowed ✅]
 C -->|Blacklisted| E[Blocked ❌]
 C -->|Not Listed| F[AI Classifier]
@@ -26,7 +27,7 @@ I --> L
 J --> L
 K --> L
 
-L --> M[Response JSON: {verdict, category, confidence, reason}]
+L --> M[Response JSON: verdict, category, confidence, reason]
 
 
 ```
