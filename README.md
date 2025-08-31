@@ -100,10 +100,10 @@ SMS-FILTER-AI/
 |   └── settings.json          # Set spam block threshold
 ├── data/
 │   └── preprocessed_data
-|       └── labeled_sms_dataset_FINAL.csv
-|       └── preprocessing.ipynb
-|    └── raw
-|        └── message_dataset_50k.csv
+|   |   └── labeled_sms_dataset_FINAL.csv
+|   |   └── preprocessing.ipynb
+|   └── raw
+|       └── message_dataset_50k.csv
 ├── logs/
 │   └── application.log
 ├── models/
@@ -377,18 +377,29 @@ curl -X POST "http://localhost:8000/check-sms" \
 Sample Locust script (`locustfile.py`):
 
 ```python
-from locust import HttpUser, task
+from locust import HttpUser, task, between
 import random
+test_sms_pool = [
+    "Your OTP is 1234. Do not share it with anyone.",
+    "Check out our sale at https://trip.com ",
+    "You've won a prize! Claim now: https://fakewebsite.com ",
+    "Thank you for shopping with us!", "Your package with tracking ID 12345 has been shipped.",
+    "Urgent: Verify your account at https:
+    "Reset your password now at https://get-rich-fast.biz "
+]
 
-class SMSUser(HttpUser):
+class SimulatedSMSUser(HttpUser):
+
+    host = "http://127.0.0.1:8000"  # Update to your FastAPI server URL if needed
+    wait_time = between(0.01, 0.1)   # Random pause between requests
     @task
-    def classify_sms(self):
-        msgs = [
-            "Your OTP is 123456",
-            "Win iPhone! Visit https://fakewebsite.com",
-            "50% OFF today at trip.com"
-        ]
-        self.client.post("/check-sms", json={"message": random.choice(msgs)})
+    def submit_sms(self):
+        sms_text = random.choice(test_sms_pool)
+        self.client.post(
+            "/check_sms",
+            json={"message": sms_text},
+            headers={"Content-Type": "application/json"}
+        )
 ```
 
 Run test:
