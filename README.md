@@ -19,12 +19,11 @@ flowchart TD
     G -->|Transactional| H[Allowed with High Priority ⚡]
     G -->|Promotional| I[Allowed/Flagged with Confidence Score 📊]
     G -->|Spam| J[Blocked 🚫]
-    G -->|Uncertain / Suspicious| K[Quarantined / Manual Review 🕵️]
-
+  
     H --> L[Final Verdict]
     I --> L
     J --> L
-    K --> L
+    
 
     L --> M[Response JSON: verdict, category, confidence, reason]
 
