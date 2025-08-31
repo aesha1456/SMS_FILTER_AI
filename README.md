@@ -8,26 +8,39 @@ A robust and production-ready SMS classification system built with **FastAPI** a
 
 ```mermaid
 flowchart TD
+    A[Incoming SMS Message] --> B[API Endpoint: /check_sms]
 
-A[Incoming SMS Message] --> B[API Endpoint: /check_sms]
-B --> C[Whitelist / Blacklist Check]
+    B --> C[Whitelist / Blacklist Check]
+    C -->|Whitelisted (Trusted Domains / Phrases)| D[Directly Allowed ✅]
+    C -->|Suspicious Domain / Blacklisted| E[Blocked ❌]
+    C -->|Not Listed| F[AI Classifier (ML Model: spam_model.pkl)]
 
-C -->|Whitelisted| D[Directly Allowed ✅]
-C -->|Blacklisted| E[Blocked ❌]
-C -->|Not Listed| F[AI Classifier]
+    F --> G{Category Prediction}
+    G -->|Transactional| H[Allowed with High Priority ⚡]
+    G -->|Promotional| I[Allowed/Flagged with Confidence Score 📊]
+    G -->|Spam| J[Blocked 🚫]
+    G -->|Uncertain / Suspicious| K[Quarantined / Manual Review 🕵️]
 
-F --> G{Category Prediction}
-G -->|Transactional| H[Allowed with High Priority ⚡]
-G -->|Promotional| I[Allowed/Flagged with Confidence Score 📊]
-G -->|Spam| J[Blocked 🚫]
-G -->|Suspicious| K[Quarantined / Manual Review 🕵️]
+    H --> L[Final Verdict]
+    I --> L
+    J --> L
+    K --> L
 
-H --> L[Final Verdict]
-I --> L
-J --> L
-K --> L
+    L --> M[Response JSON: {verdict, category, confidence, reason}]
+    
+    %% Optional Notes for clarity
+    subgraph Whitelist
+        D
+    end
 
-L --> M[Response JSON: verdict, category, confidence, reason]
+    subgraph Blacklist/Suspicious Domains
+        E
+    end
+
+    subgraph AI Model
+        F --> G
+    end
+
 
 
 ```
