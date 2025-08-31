@@ -115,6 +115,11 @@ SMS-FILTER-AI/
 
 ---
 
+## SMS Filter Scenarios  
+
+Below is a diagram that demonstrates all possible scenarios in the SMS Spam Detection System:  
+
+![SMS Scenarios](./output_image.png)
 ## 🧩 Core Components
 
 1. **Filter Engine** ([`src/filter_engine.py`](src/filter_engine.py))
