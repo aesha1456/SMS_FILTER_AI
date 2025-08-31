@@ -34,15 +34,22 @@ flowchart TD
 
 ---
 
+## What it does
+
+Classifies SMS messages into 3 categories:
+
+* Spam: Malicious/unwanted messages
+* Promotional: Marketing content
+* Transactional: Service messages (OTPs, receipts)
+
 ## 📊 Dataset
 
-* **Size**: 12,030 labeled SMS messages
-* **Balance**: 4,010 per category (*Spam*, *Promotional*, *Transactional*)
+* **Size**: 12,060 labeled SMS messages
+* **Balance**: 4,020 per category (*Spam*, *Promotional*, *Transactional*)
 * **Quality**: Curated to ensure even distribution and reduce bias
 * **Result**: Perfect confusion matrix during evaluation (no misclassifications)
 
 ---
-
 
 
 ## 🧪 Model Performance
@@ -62,24 +69,47 @@ flowchart TD
 * **Deployment Footprint**: \~200MB Docker image, \~512MB memory runtime
 
 ---
+## Technical Details
+
+**ML Model:**
+
+* Algorithm: Logistic Regression
+* Features: TF-IDF (5,000 features)
+* Vectorized data shape: (9648, 5000)
+* Training: 9,648 samples
+* Testing: 2,412 samples
+
+**Docker:**
+
+* Base: python:3.11-slim
+* Size: \~200MB
+* Memory: \~512MB runtime
+* Startup: <10 seconds
 
 ## 🏗️ Project Structure
 
 ```
-sms-spam-filter/
+SMS-FILTER-AI/
 ├── Dockerfile                 # Container setup
 ├── main.py                    # FastAPI application entry point
 ├── requirements.txt           # Python dependencies
-├── test_filter.py             # Unit tests
+├── test_sms_filter.py         # Unit tests
+├── locust_test.py              # Load testing configuration
 ├── config/
 │   └── whitelist.json         # Trusted domains & phrases
+|   └── settings.json          # Set spam block threshold
 ├── data/
-│   └── labeled_sms_dataset_BALANCED.csv
+│   └── preprocessed_data
+|       └── labeled_sms_dataset_FINAL.csv
+|       └── preprocessing.ipynb
+|    └── preprocessed_data
+|        └── message_dataset_50k.csv
 ├── logs/
-│   └── app.log
+│   └── application.log
 ├── models/
-│   ├── spam_model.pkl         # Trained classifier
-│   └── vectorizer.pkl         # TF-IDF feature extractor
+│   ├── sms_classifier.pkl     # Trained classifier
+│   └── tfidf_vectorizer.pkl   # TF-IDF feature extractor
+|   └── preprocessing.ipynb 
 └── src/
     └── filter_engine.py       # Core filtering and detection logic
 ```
@@ -88,20 +118,20 @@ sms-spam-filter/
 
 ## 🧩 Core Components
 
-1. **Filter Engine** (`src/filter_engine.py`)
+1. **Filter Engine** ([`src/filter_engine.py`](src/filter_engine.py))
 
    * Extracts domains from messages
    * Compares against trusted whitelist
    * Runs ML-based classification (TF-IDF + Logistic Regression)
    * Detects known malicious domains
 
-2. **API Layer** (`main.py`)
+2. **API Layer** ([`main.py`](main.py))
 
    * Exposes `/check-sms` endpoint
    * Handles request validation and error responses
    * Outputs structured JSON verdicts
 
-3. **Configuration** (`config/whitelist.json`)
+3. **Configuration**  ([`config/whitelist.json`](config/whitelist.json))
 
    * Stores safe domains (e.g., *amazon.in, flipkart.com*)
    * Stores safe phrases (e.g., *“your otp is”*)
@@ -109,13 +139,6 @@ sms-spam-filter/
 
 ---
 
-## 🔍 Data Flow
-
-```
-Incoming SMS → Extract Domains → Check Whitelist → AI Model → Suspicious Domain Check → Final Verdict
-```
-
----
 
 ## 📜 Logging
 
@@ -142,13 +165,60 @@ Logs (`logs/app.log`) capture:
 
 **Domain-based** and **phrase-based** logic ensures legitimate services are never flagged.
 
-Example entries in `whitelist.json`:
+Example entries [`config/whitelist.json`](config/whitelist.json):
 
 ```json
 {
-  "domains": ["amazon.in", "flipkart.com", "paytm.com"],
-  "phrases": ["your otp is", "transaction successful", "booking confirmed"]
+  "domains": [
+    "trip.com",
+    "amazon.in",
+    "flipkart.com",
+    "myntra.com",
+    "icicibank.com",
+    "airtel.in",
+    "bluedart.com",
+    "secure.bankportal.in",
+    "officialstore.com",
+    "paytm.com",
+    "zomato.com",
+    "ola.in",
+    "flipkartpayments.com",
+    "swiggy.com",
+    "amazonpay.in"
+  ],
+  
+  "phrases": [
+    "your otp is",
+    "payment successful",
+    "thank you for shopping",
+    "transaction id",
+    "logged into account",
+    "tracking id",
+    "invoice for order",
+    "booking confirmed",
+    "shipped",
+    "wallet credited",
+    "order delivered",
+    "promo code applied",
+    "subscription activated",
+    "payment received",
+    "delivery scheduled"
+  ],
+  
+  "senders": [
+    "VM-ICICIBK",
+    "VK-AMAZON",
+    "VM-AXISBK",
+    "VK-FLIPKART",
+    "VM-PAYTM",
+    "VK-SBIOTP",
+    "VM-HDFC",
+    "VK-PHONEPE",
+    "VM-YESBANK",
+    "VK-ICICILOAN"
+]
 }
+
 ```
 
 Example messages:
@@ -212,12 +282,12 @@ curl -X POST "http://localhost:8000/check-sms" \
 
 ## 🔍 Real API Examples
 
-**Promotional (Whitelisted Domain):**
+**1. Promotional (Whitelisted Domain):**
 
 ```bash
 curl -X POST "http://localhost:8000/check-sms" \
   -H "Content-Type: application/json" \
-  -d '{"message": "Big sale today at https://trip.com"}'
+  -d '{"message": "Big sale today at https://amazon.com"}'
 ```
 
 Response:
@@ -226,7 +296,7 @@ Response:
 {"verdict": "allowed", "reason": "whitelisted"}
 ```
 
-**Spam (Suspicious Domain):**
+**2. Spam (Suspicious Domain):**
 
 ```bash
 curl -X POST "http://localhost:8000/check-sms" \
@@ -240,18 +310,64 @@ Response:
 {"verdict": "blocked", "reason": "suspicious_domain", "matched_domain": "fakewebsite.com"}
 ```
 
-**Transactional (Whitelisted Phrase):**
+**3. Transactional (AI Domain):**
 
 ```bash
-curl -X POST "http://localhost:8000/check-sms" \
+curl -X POST "http://127.0.0.1:8000/check_sms" \
   -H "Content-Type: application/json" \
-  -d '{"message": "Your OTP is 987654"}'
+  -d '{"message\":\"Your order #98765 has been shipped and will arrive tomorrow."}'
 ```
 
 Response:
 
 ```json
-{"verdict": "allowed", "reason": "whitelisted"}
+{"verdict":"allowed","reason":"ai","category":"Transactional","confidence":1.0}
+
+```
+
+---
+
+**4. Promotional (AI Domain):**
+
+```bash
+curl -X POST "http://127.0.0.1:8000/check_sms" \
+  -H "Content-Type: application/json" \
+  -d '{"message\":\"Big sale! Get 50% off today on all items!."}'
+```
+
+Response:
+
+```json
+{"verdict":"allowed","reason":"ai","category":"Promotional","confidence":1.0}
+
+```
+**5. Spam Message (AI Domain):**
+
+```bash
+curl -X POST "http://127.0.0.1:8000/check_sms" \
+  -H "Content-Type: application/json" \
+  -d '{"message\":"Congratulations! You won $1000. Click http://fakewebsite.com to claim."}'
+```
+
+Response:
+
+```json
+{"verdict":"allowed","reason":"ai","confidence":1.0}
+
+```
+
+**6. Empty Message:**
+
+```bash
+curl -X POST "http://localhost:8000/check-sms" \
+  -H "Content-Type: application/json" \
+  -d '{"message": ""}'
+```
+
+**Response:**
+
+```json
+{"detail": "Empty message"}
 ```
 
 ---
@@ -297,11 +413,5 @@ locust -f locustfile.py --host=http://localhost:8000 -u 100 -r 10
 
 This SMS filter system combines **AI classification**, **domain analysis**, and **configurable whitelisting** to deliver **lightning-fast**, **accurate**, and **secure** SMS filtering. Tested on a balanced dataset with perfect accuracy and stress-tested under load, it is ready for deployment in real telecom-grade environments.
 
-
-
-
----
-
-Would you like me to also **design a professional project logo/banner (with text + icon)** for the README so it looks visually unique and polished?
 
 
