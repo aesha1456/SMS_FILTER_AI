@@ -3,6 +3,9 @@
 A robust and production-ready SMS classification system built with **FastAPI** and **Docker**, capable of distinguishing between **Transactional**, **Promotional**, and **Spam** messages. The system combines **machine learning classification** with **rule-based logic** (whitelisting and suspicious domain detection) for maximum accuracy and minimal false positives.
 
 ---
+## Demo Video  
+🎥 Watch the full project demo here: [Loom Video](https://www.loom.com/share/26f4b85db6a844328ec76814d9cfc4cc?sid=451edacc-49bb-4269-8c9f-fae0817eb6e0)
+
 
 ## 🏗️ System Architecture / Pipeline Flow
 
